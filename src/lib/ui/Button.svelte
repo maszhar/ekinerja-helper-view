@@ -32,6 +32,7 @@
         children,
         onclick = undefined,
         color = "primary",
+        disabled = false,
     } = $props();
 </script>
 
@@ -41,8 +42,9 @@
         ? 'bg-orange-400 text-zinc-800'
         : color == 'red'
           ? 'bg-red-700 text-zinc-100'
-          : ''}  rounded-md {clazz}"
+          : ''} disabled:bg-zinc-700 disabled:text-zinc-500 rounded-md {clazz}"
     onclick={() => onclick?.()}
+    {disabled}
 >
     {@render children?.()}
 </button>

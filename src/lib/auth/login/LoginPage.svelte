@@ -33,6 +33,7 @@
     import { Application } from "$lib/app/Application";
     import { EKinerjaSession } from "$lib/app/EKinerjaSession";
     import { EKinerjaTokens } from "$lib/app/EKinerjaTokens";
+    import { goto } from "$app/navigation";
 
     const globalData = Application.INSTANCE.getGlobalData();
     const ekinerjaSession$$ = globalData.getEkinerjaSession$$();
@@ -79,6 +80,10 @@
         }
     }
 
+    function start() {
+        goto("/main");
+    }
+
     onMount(() => {
         (window as any).verifyEkinerjaTokens = verifyEkinerjaTokens;
     });
@@ -111,6 +116,12 @@
             <LoginCard type="Google Drive" />
         </div>
 
-        <Button class="mt-8">Mulai Aplikasi</Button>
+        <Button
+            class="mt-8"
+            onclick={() => start()}
+            disabled={!$ekinerjaSession$$?.name}
+        >
+            Mulai Aplikasi
+        </Button>
     </div>
 </main>
