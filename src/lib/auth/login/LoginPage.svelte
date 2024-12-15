@@ -26,8 +26,9 @@
   SOFTWARE.
 -->
 
-<script>
+<script lang="ts">
     import Button from "$lib/ui/Button.svelte";
+    import { onDestroy, onMount } from "svelte";
     import LoginCard from "./LoginCard.svelte";
 
     async function openLoginEkinerja() {
@@ -39,6 +40,31 @@
             console.error(e);
         }
     }
+
+    async function verifyEkinerjaTokens(data: any) {
+        const response = await fetch(
+            "https://kinerja.bkn.go.id/api/pegawai/detil",
+            {
+                headers: {
+                    Authorization: `Bearer ${data.accessToken}`,
+                    "X-Xsrf-Token": data.xsrfToken,
+                },
+            },
+        );
+
+        const respBody = await response.json();
+        console.log(respBody);
+    }
+
+    onMount(() => {
+        (window as any).verifyEkinerjaTokens = verifyEkinerjaTokens;
+    });
+
+    onDestroy(() => {
+        if (typeof window !== "undefined") {
+            (window as any).verifyEkinerjaTokens = undefined;
+        }
+    });
 </script>
 
 <main class="w-full min-h-screen bg-zinc-100 dark:bg-zinc-900 p-8">
