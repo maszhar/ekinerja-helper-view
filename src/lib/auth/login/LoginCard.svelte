@@ -1,10 +1,7 @@
 <script lang="ts">
     import Button from "$lib/ui/Button.svelte";
 
-    let clazz = "";
-    export { clazz as class };
-
-    export let type = "";
+    const { onlogin = () => {}, type = "", class: clazz = "" } = $props();
 </script>
 
 <div
@@ -17,5 +14,5 @@
         </div>
         <div></div>
     </div>
-    <Button class="mt-4">Login</Button>
+    <Button class="mt-4" onclick={onlogin}>Login</Button>
 </div>

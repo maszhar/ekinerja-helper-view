@@ -1,6 +1,16 @@
 <script>
     import Button from "$lib/ui/Button.svelte";
     import LoginCard from "./LoginCard.svelte";
+
+    async function openLoginEkinerja() {
+        try {
+            await fetch("/api/login-ekinerja", {
+                method: "POST",
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    }
 </script>
 
 <main class="w-full min-h-screen bg-zinc-100 dark:bg-zinc-900 p-8">
@@ -10,7 +20,12 @@
         <h1 class="font-semibold text-2xl text-black dark:text-white">Login</h1>
 
         <div class="flex flex-col gap-6 mt-6">
-            <LoginCard type="E-Kinerja" />
+            <LoginCard
+                type="E-Kinerja"
+                onlogin={() => {
+                    openLoginEkinerja();
+                }}
+            />
 
             <LoginCard type="Google Drive" />
         </div>
