@@ -42,7 +42,7 @@
         ? 'bg-orange-400 text-zinc-800'
         : color == 'red'
           ? 'bg-red-700 text-zinc-100'
-          : ''} disabled:bg-zinc-700 disabled:text-zinc-500 rounded-md {clazz}"
+          : ''} disabled:bg-zinc-100 disabled:text-zinc-300 dark:disabled:bg-zinc-700 dark:disabled:text-zinc-500 rounded-md {clazz}"
     onclick={() => onclick?.()}
     {disabled}
 >
