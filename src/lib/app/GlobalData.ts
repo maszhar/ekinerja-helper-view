@@ -1,22 +1,22 @@
 import { writable } from "svelte/store";
-import type { EKinerjaTokens } from "./EKinerjaTokens";
+import type { EKinerjaSession } from "./EKinerjaSession";
 
 export class GlobalData {
-    private ekinerjaTokens$$ = writable<EKinerjaTokens | null>(null)
+    private ekinerjaSession$$ = writable<EKinerjaSession | null>(null)
 
     constructor() {
 
     }
 
-    setEkinerjaTokens(tokens: EKinerjaTokens) {
-        this.ekinerjaTokens$$.set(tokens)
+    setEkinerjaSession(tokens: EKinerjaSession) {
+        this.ekinerjaSession$$.set(tokens)
     }
 
-    clearEkinerjaTokens() {
-        this.ekinerjaTokens$$.set(null)
+    clearEkinerjaSession() {
+        this.ekinerjaSession$$.set(null)
     }
 
-    getEkinerjaTokens$$() {
-        return this.ekinerjaTokens$$
+    getEkinerjaSession$$() {
+        return this.ekinerjaSession$$
     }
 }

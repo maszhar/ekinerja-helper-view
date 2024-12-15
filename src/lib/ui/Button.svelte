@@ -27,12 +27,21 @@
 -->
 
 <script lang="ts">
-    let { class: clazz = "", children, onclick = undefined } = $props();
+    let {
+        class: clazz = "",
+        children,
+        onclick = undefined,
+        color = "primary",
+    } = $props();
 </script>
 
 <button
     type="button"
-    class="px-4 py-1.5 bg-orange-400 text-zinc-800 rounded-md {clazz}"
+    class="px-4 py-1.5 {color == 'primary'
+        ? 'bg-orange-400 text-zinc-800'
+        : color == 'red'
+          ? 'bg-red-700 text-zinc-100'
+          : ''}  rounded-md {clazz}"
     onclick={() => onclick?.()}
 >
     {@render children?.()}

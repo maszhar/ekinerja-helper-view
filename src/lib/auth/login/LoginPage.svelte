@@ -30,6 +30,12 @@
     import Button from "$lib/ui/Button.svelte";
     import { onDestroy, onMount } from "svelte";
     import LoginCard from "./LoginCard.svelte";
+    import { Application } from "$lib/app/Application";
+    import { EKinerjaSession } from "$lib/app/EKinerjaSession";
+    import { EKinerjaTokens } from "$lib/app/EKinerjaTokens";
+
+    const globalData = Application.INSTANCE.getGlobalData();
+    const ekinerjaSession$$ = globalData.getEkinerjaSession$$();
 
     async function openLoginEkinerja() {
         try {
@@ -42,18 +48,35 @@
     }
 
     async function verifyEkinerjaTokens(data: any) {
-        const response = await fetch(
-            "https://kinerja.bkn.go.id/api/pegawai/detil",
-            {
-                headers: {
-                    Authorization: `Bearer ${data.accessToken}`,
-                    "X-Xsrf-Token": data.xsrfToken,
+        try {
+            const response = await fetch(
+                "https://kinerja.bkn.go.id/api/pegawai/detil",
+                {
+                    headers: {
+                        Authorization: `Bearer ${data.accessToken}`,
+                        "X-Xsrf-Token": data.xsrfToken,
+                    },
                 },
-            },
-        );
+            );
+            if (response.status != 200) {
+                throw new Error(response.status.toString());
+            }
 
-        const respBody = await response.json();
-        console.log(respBody);
+            const respBody = await response.json();
+
+            const newEkinerjaSession = new EKinerjaSession(
+                new EKinerjaTokens(
+                    data.accessToken,
+                    data.xsrfToken,
+                    data.sessionAuth,
+                    data.cookieAuth,
+                ),
+                respBody.data.nama,
+            );
+            globalData.setEkinerjaSession(newEkinerjaSession);
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     onMount(() => {
@@ -79,6 +102,10 @@
                 onlogin={() => {
                     openLoginEkinerja();
                 }}
+                onlogout={() => {
+                    globalData.clearEkinerjaSession();
+                }}
+                account={$ekinerjaSession$$?.name}
             />
 
             <LoginCard type="Google Drive" />

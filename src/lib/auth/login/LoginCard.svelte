@@ -28,19 +28,41 @@
 
 <script lang="ts">
     import Button from "$lib/ui/Button.svelte";
+    import VerifiedIcon from "$lib/ui/icon/VerifiedIcon.svelte";
 
-    const { onlogin = () => {}, type = "", class: clazz = "" } = $props();
+    const {
+        onlogin = () => {},
+        onlogout = () => {},
+        type = "",
+        class: clazz = "",
+        account = "",
+    } = $props();
 </script>
 
 <div
     class="rounded-md p-4 bg-zinc-100 dark:bg-zinc-700 border border-zinc-400 dark:border-zinc-500 flex flex-col {clazz}"
 >
-    <div>
-        <div>
+    <div class="flex gap-4">
+        <div class="flex-grow">
             <div class="font-semibold text-black dark:text-white">{type}</div>
-            <div class="text-sm mt-0.5">Status: Belum login</div>
+            <div class="text-sm mt-0.5">
+                {#if !account}
+                    Status: <span class="text-red-500">Belum login</span>
+                {:else}
+                    Status: <span class="text-green-500">Terotentikasi</span>
+                    a.n. {account}
+                {/if}
+            </div>
         </div>
-        <div></div>
+        <div class="flex-none">
+            {#if account}
+                <VerifiedIcon />
+            {/if}
+        </div>
     </div>
-    <Button class="mt-4" onclick={onlogin}>Login</Button>
+    {#if !account}
+        <Button class="mt-4" onclick={onlogin}>Login</Button>
+    {:else}
+        <Button class="mt-4" onclick={onlogout} color="red">Logout</Button>
+    {/if}
 </div>
