@@ -1,7 +1,7 @@
 import type { Rhk } from "./Rhk";
 
 export class Skp {
-    constructor(public id: string, public tahun: number, public periodeAwal: Date, public periodeAkhir: Date, public rhk: Rhk[] = []) {
+    constructor(public id: string, public tahun: number, public periodeAwal: Date, public periodeAkhir: Date, public rhkList: Rhk[] = []) {
 
     }
 

@@ -10,16 +10,27 @@
     const app = Application.INSTANCE;
     const repository = new MainRepository(app.getRemoteSource());
 
-    let page: "skp" = $state("skp");
+    let page: "skp" | "rhk" = $state("skp");
     let skpList: Skp[] = $state([]);
+    let selectedSkp: Skp | null = $state(null);
 
-    async function loadSkp() {
+    async function loadSkpList() {
         const lSkpList = await repository.getSkpList();
         skpList = lSkpList;
     }
 
+    async function loadRhkList(skp: Skp) {
+        await repository.getRhkList(skp);
+    }
+
+    async function onSelectSkp(skp: Skp) {
+        page = "rhk";
+        await loadRhkList(skp);
+        selectedSkp = skp;
+    }
+
     onMount(async () => {
-        await loadSkp();
+        await loadSkpList();
     });
 </script>
 
@@ -31,9 +42,9 @@
     <div class="p-6">
         {#if page == "skp"}
             <h1 class="font-semibold text-xl mb-4">Pilih Tahun/Periode SKP</h1>
-            <SkpList {skpList} />
-        {:else}
-            <RhkTable />
+            <SkpList {skpList} {onSelectSkp} />
+        {:else if page == "rhk" && selectedSkp}
+            <RhkTable rhkList={selectedSkp.rhkList} />
         {/if}
     </div>
 </main>

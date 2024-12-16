@@ -1,11 +1,12 @@
 <script lang="ts">
     import { DateUtils } from "$lib/utils/DateUtils";
 
-    let { skp } = $props();
+    let { skp, onSelectSkp = () => {} } = $props();
 </script>
 
 <button
     class="bg-zinc-800 flex items-stretch gap-4 p-4 rounded-md border border-zinc-600"
+    onclick={() => onSelectSkp(skp)}
 >
     <div
         class="flex-none flex justify-center items-center w-16 bg-green-400 text-zinc-800 font-semibold rounded-sm"

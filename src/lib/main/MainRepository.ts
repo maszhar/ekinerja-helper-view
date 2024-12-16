@@ -1,4 +1,5 @@
 import { TargetServer, type RemoteSource } from "$lib/app/RemoteSource";
+import { Rhk } from "./model/Rhk";
 import { Skp } from "./model/Skp";
 
 export class MainRepository {
@@ -15,5 +16,21 @@ export class MainRepository {
         }
 
         return skpList
+    }
+
+    async getRhkList(skp: Skp): Promise<Rhk[]> {
+        const response = await this.remoteSource.get(TargetServer.EKINERJA, true, `/skp/${skp.id}?master=1`)
+        const respBody = await response.json()
+
+        const rhkList: Rhk[] = []
+        for (const item of respBody.data.kinerja) {
+            rhkList.push(Rhk.fromJsonable(item))
+        }
+
+        skp.rhkList = rhkList
+
+        console.log(rhkList)
+
+        return rhkList
     }
 }
