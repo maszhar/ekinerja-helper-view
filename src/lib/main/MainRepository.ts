@@ -29,8 +29,6 @@ export class MainRepository {
 
         skp.rhkList = rhkList
 
-        console.log(rhkList)
-
         return rhkList
     }
 }
