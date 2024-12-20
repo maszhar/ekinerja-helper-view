@@ -1,8 +1,11 @@
-<script>
-    import { Indikator } from "./model/Indikator";
+<script lang="ts">
+    import type { Rhk } from "./model/Rhk";
     import RhkTableCell from "./RhkTableCell.svelte";
 
-    let { rhkList } = $props();
+    interface Properti {
+        rhkList?: Rhk[];
+    }
+    let { rhkList = [] }: Properti = $props();
 </script>
 
 <table class="w-full">
@@ -14,6 +17,8 @@
             <RhkTableCell head>Deskripsi Indikator</RhkTableCell>
             <RhkTableCell head class="whitespace-nowrap">Di isi</RhkTableCell>
             <RhkTableCell head>Rencana Aksi</RhkTableCell>
+            <RhkTableCell head>Target</RhkTableCell>
+            <RhkTableCell head>Satuan</RhkTableCell>
         </tr>
     </thead>
 
@@ -42,6 +47,16 @@
                 <RhkTableCell rowspan={rhk.indikatorList?.length || 1}>
                     {#if rhk.rencanaAksi}
                         {rhk.rencanaAksi.deskripsi}
+                    {/if}
+                </RhkTableCell>
+                <RhkTableCell rowspan={rhk.indikatorList?.length || 1}>
+                    {#if rhk.rencanaAksi}
+                        {rhk.rencanaAksi.target}
+                    {/if}
+                </RhkTableCell>
+                <RhkTableCell rowspan={rhk.indikatorList?.length || 1}>
+                    {#if rhk.rencanaAksi}
+                        {rhk.rencanaAksi.satuanTarget}
                     {/if}
                 </RhkTableCell>
             </tr>
