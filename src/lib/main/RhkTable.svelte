@@ -11,12 +11,19 @@
 <table class="w-full">
     <thead class="sticky top-0">
         <tr class="text-sm border">
-            <RhkTableCell head>No</RhkTableCell>
-            <RhkTableCell head>Rencana Hasil Kerja (RHK)</RhkTableCell>
-            <RhkTableCell head>Indikator</RhkTableCell>
-            <RhkTableCell head>Deskripsi Indikator</RhkTableCell>
-            <RhkTableCell head class="whitespace-nowrap">Di isi</RhkTableCell>
-            <RhkTableCell head>Rencana Aksi</RhkTableCell>
+            <RhkTableCell head rowspan={2}>No</RhkTableCell>
+            <RhkTableCell head rowspan={2}>
+                Rencana Hasil Kerja (RHK)
+            </RhkTableCell>
+            <RhkTableCell head rowspan={2}>Indikator</RhkTableCell>
+            <RhkTableCell head rowspan={2}>Deskripsi Indikator</RhkTableCell>
+            <RhkTableCell head rowspan={2} class="whitespace-nowrap">
+                Di isi
+            </RhkTableCell>
+            <RhkTableCell head colspan={3}>Rencana Aksi</RhkTableCell>
+        </tr>
+        <tr class="text-sm border">
+            <RhkTableCell head>Deskripsi</RhkTableCell>
             <RhkTableCell head>Target</RhkTableCell>
             <RhkTableCell head>Satuan</RhkTableCell>
         </tr>
