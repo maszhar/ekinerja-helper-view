@@ -3,10 +3,12 @@
     import RibbonItem from "./RibbonItem.svelte";
 
     interface Properti {
+        showPeriodePenilaianOptions: boolean;
         periodePenilaianList?: PeriodePenilaian[];
     }
 
-    let { periodePenilaianList }: Properti = $props();
+    let { showPeriodePenilaianOptions, periodePenilaianList }: Properti =
+        $props();
 </script>
 
 <div
@@ -18,19 +20,21 @@
             <RibbonItem>Isi Otomatis</RibbonItem>
         </div>
         <div class="flex items-center gap-2 pr-4">
-            <div>Periode Penilaian</div>
-            <select class="w-40 text-black">
-                {#if periodePenilaianList == null}
-                    <option>Memuat...</option>
-                {:else}
-                    <option>--Pilih Periode--</option>
-                    {#each periodePenilaianList as periodePenilaian}
-                        <option value={periodePenilaian.id}>
-                            {periodePenilaian.nama}
-                        </option>
-                    {/each}
-                {/if}
-            </select>
+            {#if showPeriodePenilaianOptions}
+                <div>Periode Penilaian</div>
+                <select class="w-40 text-black">
+                    {#if periodePenilaianList == null}
+                        <option>Memuat...</option>
+                    {:else}
+                        <option>--Pilih Periode--</option>
+                        {#each periodePenilaianList as periodePenilaian}
+                            <option value={periodePenilaian.id}>
+                                {periodePenilaian.nama}
+                            </option>
+                        {/each}
+                    {/if}
+                </select>
+            {/if}
         </div>
     </div>
     <div
