@@ -16,6 +16,8 @@
     let selectedSkp: Skp | null = $state(null);
     let selectedPeriodePenilaian: PeriodePenilaian | null = $state(null);
 
+    let redrawing = $state(false);
+
     async function loadSkpList() {
         const lSkpList = await repository.getSkpList();
         skpList = lSkpList;
@@ -41,9 +43,10 @@
     }
 
     function refreshRhkUi() {
-        const selectedSkpBackup = selectedSkp;
-        selectedSkp = null;
-        selectedSkp = selectedSkpBackup;
+        redrawing = true;
+        setTimeout(() => {
+            redrawing = false;
+        }, 10);
     }
 
     onMount(async () => {
@@ -65,7 +68,9 @@
             <h1 class="font-semibold text-xl mb-4">Pilih Tahun/Periode SKP</h1>
             <SkpList {skpList} {onSelectSkp} />
         {:else if page == "rhk" && selectedSkp}
-            <RhkTable rhkList={selectedSkp.rhkList} />
+            {#if !redrawing}
+                <RhkTable rhkList={selectedSkp.rhkList} />
+            {/if}
         {/if}
     </div>
 </main>

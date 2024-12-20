@@ -38,6 +38,8 @@ export class MainRepository {
         const response = await this.remoteSource.get(TargetServer.EKINERJA, true, `/skp/${skp.id}/penilaian/${periodePenilaian.periode}/rencana_aksi`)
         const respBody = await response.json();
 
+        this.cleanRencanaAksiListInRhkList(skp)
+
         const rencanaAksiList: RencanaAksi[] = []
         for (const item of respBody.data.rencana_aksi) {
             const rhk = skp.rhkList.find((rhkItem) => rhkItem.id == item.rhk_id)
@@ -50,6 +52,12 @@ export class MainRepository {
         }
 
         return rencanaAksiList
+    }
+
+    private cleanRencanaAksiListInRhkList(skp: Skp) {
+        for (const rhk of skp.rhkList) {
+            rhk.rencanaAksi = null;
+        }
     }
 
     async getPeriodePenilaianList(skp: Skp): Promise<PeriodePenilaian[]> {
