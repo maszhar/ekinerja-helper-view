@@ -6,6 +6,7 @@
     import RhkTable from "./RhkTable.svelte";
     import SkpList from "./SkpList.svelte";
     import type { Skp } from "./model/Skp";
+    import type { PeriodePenilaian } from "./model/PeriodePenilaian";
 
     const app = Application.INSTANCE;
     const repository = new MainRepository(app.getRemoteSource());
@@ -13,6 +14,7 @@
     let page: "skp" | "rhk" = $state("skp");
     let skpList: Skp[] = $state([]);
     let selectedSkp: Skp | null = $state(null);
+    let selectedPeriodePenilaian: PeriodePenilaian | null = $state(null);
 
     async function loadSkpList() {
         const lSkpList = await repository.getSkpList();
@@ -28,17 +30,34 @@
         selectedSkp = skp;
     }
 
+    async function onSelectPeriodePenilaian(
+        periodePenilaian: PeriodePenilaian | null,
+    ) {
+        if (periodePenilaian && selectedSkp) {
+            await repository.getRencanaAksiList(selectedSkp, periodePenilaian);
+            refreshRhkUi();
+        }
+        selectedPeriodePenilaian = periodePenilaian;
+    }
+
+    function refreshRhkUi() {
+        const selectedSkpBackup = selectedSkp;
+        selectedSkp = null;
+        selectedSkp = selectedSkpBackup;
+    }
+
     onMount(async () => {
         await loadSkpList();
     });
 </script>
 
 <main
-    class="pt-32 min-h-screen bg-zinc-200 dark:bg-zinc-950 text-zinc-700 dark:text-zinc-300"
+    class="pt-32 min-h-screen bg-zinc-200 dark:bg-zinc-950 text-zinc-700 dark:text-zinc-300 overflow-x-auto"
 >
     <Ribbon
         showPeriodePenilaianOptions={page != "skp"}
         periodePenilaianList={selectedSkp?.periodePenilaianList}
+        {onSelectPeriodePenilaian}
     />
 
     <div class="p-6">

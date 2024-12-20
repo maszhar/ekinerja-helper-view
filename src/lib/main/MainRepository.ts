@@ -1,6 +1,6 @@
 import { TargetServer, type RemoteSource } from "$lib/app/RemoteSource";
 import { PeriodePenilaian } from "./model/PeriodePenilaian";
-import type { RencanaAksi } from "./model/RencanaAksi";
+import { RencanaAksi } from "./model/RencanaAksi";
 import { Rhk } from "./model/Rhk";
 import { Skp } from "./model/Skp";
 
@@ -34,9 +34,22 @@ export class MainRepository {
         return rhkList
     }
 
-    async getRencanaAksiList(skp: Skp): Promise<RencanaAksi[]> {
-        // const response = await this.remoteSource.get(TargetServer.EKINERJA, true, `/skp/${skp.id}/penilaian/" + skpPeriod.PeriodId + "/rencana_aksi"`)
-        return []
+    async getRencanaAksiList(skp: Skp, periodePenilaian: PeriodePenilaian): Promise<RencanaAksi[]> {
+        const response = await this.remoteSource.get(TargetServer.EKINERJA, true, `/skp/${skp.id}/penilaian/${periodePenilaian.periode}/rencana_aksi`)
+        const respBody = await response.json();
+
+        const rencanaAksiList: RencanaAksi[] = []
+        for (const item of respBody.data.rencana_aksi) {
+            const rhk = skp.rhkList.find((rhkItem) => rhkItem.id == item.rhk_id)
+            if (!rhk || typeof item.rencana_aksi == "undefined" || item.rencana_aksi.length == 0) {
+                continue
+            }
+            const rencanaAksi = RencanaAksi.fromJsonable(item.rencana_aksi[0], periodePenilaian)
+            rhk.rencanaAksi = rencanaAksi
+            rencanaAksiList.push(rencanaAksi)
+        }
+
+        return rencanaAksiList
     }
 
     async getPeriodePenilaianList(skp: Skp): Promise<PeriodePenilaian[]> {

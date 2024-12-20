@@ -1,7 +1,15 @@
 import { Indikator } from "./Indikator";
+import type { RencanaAksi } from "./RencanaAksi";
 
 export class Rhk {
-    constructor(public id: string, public bagian: string, public jenis: string, public deskripsi: string, public indikatorList: Indikator[]) {
+    constructor(
+        public id: string,
+        public bagian: string,
+        public jenis: string,
+        public deskripsi: string,
+        public indikatorList: Indikator[],
+        public rencanaAksi: RencanaAksi | null = null
+    ) {
 
     }
 

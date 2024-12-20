@@ -12,6 +12,8 @@
             <RhkTableCell head>Rencana Hasil Kerja (RHK)</RhkTableCell>
             <RhkTableCell head>Indikator</RhkTableCell>
             <RhkTableCell head>Deskripsi Indikator</RhkTableCell>
+            <RhkTableCell head class="whitespace-nowrap">Di isi</RhkTableCell>
+            <RhkTableCell head>Rencana Aksi</RhkTableCell>
         </tr>
     </thead>
 
@@ -35,6 +37,13 @@
                     <RhkTableCell />
                     <RhkTableCell />
                 {/if}
+                <RhkTableCell rowspan={rhk.indikatorList?.length || 1}
+                ></RhkTableCell>
+                <RhkTableCell rowspan={rhk.indikatorList?.length || 1}>
+                    {#if rhk.rencanaAksi}
+                        {rhk.rencanaAksi.deskripsi}
+                    {/if}
+                </RhkTableCell>
             </tr>
 
             {#if rhk.indikatorList && rhk.indikatorList.length > 1}

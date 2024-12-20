@@ -1,13 +1,24 @@
 <script lang="ts">
-    let { head = false, rowspan = 1, children = null } = $props();
+    interface Properti {
+        head?: boolean;
+        rowspan?: number;
+        children?: any;
+        class?: string;
+    }
+    let {
+        head = false,
+        rowspan = 1,
+        children = null,
+        class: clazz = "",
+    }: Properti = $props();
 </script>
 
 {#if head}
-    <th class="border-r last:border-0" {rowspan}>
+    <th class="border-r last:border-0 {clazz}" {rowspan}>
         {@render children?.()}
     </th>
 {:else}
-    <td class="border-r last:border-0 align-top" {rowspan}>
+    <td class="border-r last:border-0 align-top {clazz}" {rowspan}>
         {@render children?.()}
     </td>
 {/if}

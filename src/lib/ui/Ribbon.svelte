@@ -5,10 +5,30 @@
     interface Properti {
         showPeriodePenilaianOptions: boolean;
         periodePenilaianList?: PeriodePenilaian[];
+        onSelectPeriodePenilaian?: (
+            periodePenilaian: PeriodePenilaian | null,
+        ) => void;
     }
 
-    let { showPeriodePenilaianOptions, periodePenilaianList }: Properti =
-        $props();
+    let {
+        showPeriodePenilaianOptions,
+        periodePenilaianList,
+        onSelectPeriodePenilaian,
+    }: Properti = $props();
+
+    function selectPeriodePenilaian(e: Event) {
+        const periodePenilaianId = (e.target as HTMLSelectElement).value;
+        if (!periodePenilaianId) {
+            onSelectPeriodePenilaian?.(null);
+            return;
+        }
+
+        const periodePenilaian = periodePenilaianList?.find(
+            (item) => item.id == periodePenilaianId,
+        );
+
+        onSelectPeriodePenilaian?.(periodePenilaian || null);
+    }
 </script>
 
 <div
@@ -22,11 +42,14 @@
         <div class="flex items-center gap-2 pr-4">
             {#if showPeriodePenilaianOptions}
                 <div>Periode Penilaian</div>
-                <select class="w-40 text-black">
+                <select
+                    class="w-40 text-black"
+                    onchange={selectPeriodePenilaian}
+                >
                     {#if periodePenilaianList == null}
-                        <option>Memuat...</option>
+                        <option value="">Memuat...</option>
                     {:else}
-                        <option>--Pilih Periode--</option>
+                        <option value="">--Pilih Periode--</option>
                         {#each periodePenilaianList as periodePenilaian}
                             <option value={periodePenilaian.id}>
                                 {periodePenilaian.nama}
