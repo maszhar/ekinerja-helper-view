@@ -19,13 +19,12 @@
         skpList = lSkpList;
     }
 
-    async function loadRhkList(skp: Skp) {
-        await repository.getRhkList(skp);
-    }
-
     async function onSelectSkp(skp: Skp) {
         page = "rhk";
-        await loadRhkList(skp);
+
+        await repository.getRhkList(skp);
+        await repository.getPeriodePenilaianList(skp);
+
         selectedSkp = skp;
     }
 
@@ -37,7 +36,7 @@
 <main
     class="pt-32 min-h-screen bg-zinc-200 dark:bg-zinc-950 text-zinc-700 dark:text-zinc-300"
 >
-    <Ribbon />
+    <Ribbon periodePenilaianList={selectedSkp?.periodePenilaianList} />
 
     <div class="p-6">
         {#if page == "skp"}
